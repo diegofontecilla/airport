@@ -37,4 +37,21 @@ describe Airport do
     # why I need to put line 36 to make it pass??????
     expect(airport.land(plane_3)).to eq("Unauthorized landing, airport is currently full")
   end
+
+  it 'capacity can be overriden as appropriate' do
+    # why the test passed with capacity = 4
+    airport = Airport.new(capacity = 4)
+    plane = Plane.new
+    plane_1 = Plane.new
+    plane_2 = Plane.new
+    plane_3 = Plane.new
+    plane_4 = Plane.new
+    plane_5 = Plane.new
+    airport.land(plane_1)
+    airport.land(plane_2)
+    airport.land(plane_3)
+    airport.land(plane_4)
+    airport.land(plane_5)
+    expect(airport.planes.count).to eq(5)
+  end
 end

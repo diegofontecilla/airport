@@ -1,12 +1,13 @@
 class Airport
-  attr_reader :planes
+  attr_reader :planes, :capacity
 
-  def initialize
+  def initialize(capacity = 2)
     @planes = []
+    @capacity = capacity
   end
 
   def capacity_available?
-    if @planes.count <= 2
+    if @planes.count <= @capacity
       true
     else
       false
