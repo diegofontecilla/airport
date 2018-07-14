@@ -25,4 +25,16 @@ describe Airport do
     airport.land(plane)
     expect(airport.take_off(plane)).to eq("British 304 is not longer at airport")
   end
+
+  it 'prevent landing when is full' do
+    airport = Airport.new
+    plane_1 = Plane.new
+    plane_2 = Plane.new
+    plane_3 = Plane.new
+    airport.land(plane_1)
+    airport.land(plane_2)
+    airport.land(plane_3)
+    # why I need to put line 36 to make it pass??????
+    expect(airport.land(plane_3)).to eq("Unauthorized landing, airport is currently full")
+  end
 end

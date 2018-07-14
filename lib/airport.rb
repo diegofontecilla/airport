@@ -5,8 +5,20 @@ class Airport
     @planes = []
   end
 
+  def capacity_available?
+    if @planes.count <= 2
+      true
+    else
+      false
+    end
+  end
+
   def land(plane)
-    @planes << plane
+    if capacity_available?
+      @planes << plane
+    else
+      "Unauthorized landing, airport is currently full"
+    end
   end
 
   def take_off(plane)
