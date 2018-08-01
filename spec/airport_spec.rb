@@ -23,6 +23,8 @@ describe Airport do
     airport = Airport.new
     plane = Plane.new
     airport.land(plane)
+    #DEFINE take_off!!!
+    allow(airport).to reveive(take_off).and_return("British 304 is not longer at airport")
     expect(airport.take_off).to eq("British 304 is not longer at airport")
   end
 

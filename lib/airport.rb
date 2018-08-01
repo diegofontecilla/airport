@@ -6,14 +6,6 @@ class Airport
     @capacity = capacity
   end
 
-  def capacity_available?
-    if @planes.count <= @capacity - 1
-      true
-    else
-      false
-    end
-  end
-
   def land(plane)
     if capacity_available?
       @planes << plane
@@ -33,8 +25,12 @@ class Airport
 
 private
 
+  def capacity_available?
+    @planes.count <= @capacity - 1 ? true : false
+  end
+
   def confirm_take_off
-    "British 304 is not longer at airport"
+    "British #{rand(300...339)} is not longer at airport"
   end
 
   def airport_is_empty
