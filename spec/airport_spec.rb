@@ -14,7 +14,7 @@ describe Airport do
     airport = Airport.new
     plane = Plane.new
     airport.land(plane)
-    airport.take_off(plane)
+    airport.take_off
     # fix when airport can land many planes
     expect(airport.planes).to be_empty
   end
@@ -23,7 +23,7 @@ describe Airport do
     airport = Airport.new
     plane = Plane.new
     airport.land(plane)
-    expect(airport.take_off(plane)).to eq("British 304 is not longer at airport")
+    expect(airport.take_off).to eq("British 304 is not longer at airport")
   end
 
   it 'prevent landing when is full' do
@@ -46,12 +46,16 @@ describe Airport do
     plane_2 = Plane.new
     plane_3 = Plane.new
     plane_4 = Plane.new
-    plane_5 = Plane.new
     airport.land(plane_1)
     airport.land(plane_2)
     airport.land(plane_3)
     airport.land(plane_4)
-    airport.land(plane_5)
-    expect(airport.planes.count).to eq(5)
+    expect(airport.planes.count).to eq(4)
+  end
+
+  it 'can not take_off when airport is emprty' do
+    airport = Airport.new
+    plane = Plane.new
+    expect(airport.take_off).to eq("The airport is currently empty")
   end
 end

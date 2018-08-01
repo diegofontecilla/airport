@@ -7,7 +7,7 @@ class Airport
   end
 
   def capacity_available?
-    if @planes.count <= @capacity
+    if @planes.count <= @capacity - 1
       true
     else
       false
@@ -22,14 +22,22 @@ class Airport
     end
   end
 
-  def take_off(plane)
-    @planes.delete(plane)
-    confirm_take_off
+  def take_off
+    if !@planes.empty?
+      @planes.pop
+      confirm_take_off
+    else
+      airport_is_empty
+    end
   end
 
 private
 
   def confirm_take_off
     "British 304 is not longer at airport"
+  end
+
+  def airport_is_empty
+    "The airport is currently empty"
   end
 end
