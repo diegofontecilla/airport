@@ -1,5 +1,5 @@
 class Airport
-  attr_reader :planes, :capacity
+  attr_reader :planes, :capacity, :plane_number
 
   def initialize(capacity = 2)
     @planes = []
@@ -30,7 +30,7 @@ private
   end
 
   def confirm_take_off
-    "British #{rand(300...339)} is not longer at airport"
+    "A plane has taken off"
   end
 
   def airport_is_empty

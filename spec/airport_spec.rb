@@ -6,7 +6,6 @@ describe Airport do
     airport = Airport.new
     plane = Plane.new
     airport.land(plane)
-    # fix when airport can land many planes
     expect(airport.planes).not_to be_empty
   end
 
@@ -15,17 +14,24 @@ describe Airport do
     plane = Plane.new
     airport.land(plane)
     airport.take_off
-    # fix when airport can land many planes
     expect(airport.planes).to be_empty
+  end
+
+  it 'can check when is not empty' do
+    airport = Airport.new
+    plane_1 = Plane.new
+    plane_2 = Plane.new
+    airport.land(plane_1)
+    airport.land(plane_2)
+    airport.take_off
+    expect(airport.planes).not_to be_empty
   end
 
   it 'confirm that a plane is not longer at airport after take_off' do
     airport = Airport.new
     plane = Plane.new
     airport.land(plane)
-    #DEFINE take_off!!!
-    allow(airport).to reveive(take_off).and_return("British 304 is not longer at airport")
-    expect(airport.take_off).to eq("British 304 is not longer at airport")
+    expect(airport.take_off).to eq("A plane has taken off")
   end
 
   it 'prevent landing when is full' do
@@ -36,14 +42,11 @@ describe Airport do
     airport.land(plane_1)
     airport.land(plane_2)
     airport.land(plane_3)
-    # why I need to put line 36 to make it pass??????
     expect(airport.land(plane_3)).to eq("Unauthorized landing, airport is currently full")
   end
 
   it 'capacity can be overriden as appropriate' do
-    # why the test passed with capacity = 4
-    airport = Airport.new(capacity = 4)
-    plane = Plane.new
+    airport = Airport.new(4)
     plane_1 = Plane.new
     plane_2 = Plane.new
     plane_3 = Plane.new
