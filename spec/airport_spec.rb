@@ -34,14 +34,14 @@ describe Airport do
         airport.land(fake_plane_1)
         expect(airport.take_off).to eq("A plane has taken off")
       end
+    end
 
-      it 'is prevent when airport is empty' do
-        expect(airport.take_off).to eq("The airport is currently empty")
-      end
+    it 'is prevent when airport is empty' do
+      expect(airport.take_off).to eq("The airport is currently empty")
     end
 
     context 'when weather is stormy' do
-      it 'is prevent' do
+      it 'is prevented' do
         airport = Airport.new(capacity = 2, fake_storm_g)
         allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
         airport.land(fake_plane_1)

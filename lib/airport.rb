@@ -12,8 +12,10 @@ class Airport
 
   def land(plane)
     return "Landing not allowed due to stormy weather" if stormy?
+
     if capacity_available?
-      return "Error, this plane is already landed" if !@planes.empty? && @planes.last.object_id == plane.object_id
+      message = "Error, this plane is already landed"
+      return message if !@planes.empty? && @planes.last.object_id == plane.object_id
       @planes << plane
     else
       "Unauthorized landing, airport is currently full"
