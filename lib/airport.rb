@@ -1,7 +1,7 @@
 require 'storm_generator'
 
 class Airport
-  attr_reader :planes, :capacity, :plane_number
+  attr_reader :planes, :capacity
 
   def initialize(capacity = 2, storm_g = StormGenerator.new)
     @planes = []
@@ -10,6 +10,7 @@ class Airport
   end
 
   def land(plane)
+    return "Landing not allowed due to stormy weather" if stormy?
     if capacity_available?
       @planes << plane
     else

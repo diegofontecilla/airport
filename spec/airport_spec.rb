@@ -34,42 +34,62 @@ describe Airport do
         airport.land(fake_plane_1)
         expect(airport.take_off).to eq("A plane has taken off")
       end
+
+      it 'is prevent when airport is empty' do
+        expect(airport.take_off).to eq("The airport is currently empty")
+      end
     end
 
     context 'when weather is stormy' do
-      it 'it prevent it' do
+      it 'is prevent' do
         airport = Airport.new(capacity = 2, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
         airport.land(fake_plane_1)
         allow(fake_storm_g).to receive(:is_stormy?).and_return(true)
         expect(airport.take_off).to eq("Take off not allowed due to stormy weather")
       end
     end
-
-    it 'is prevent it when airport is emprty' do
-      expect(airport.take_off).to eq("The airport is currently empty")
-    end
   end
 
   describe '#land' do
-    it 'can instrtuct a plane to land' do
-      airport.land(fake_plane_1)
-      expect(airport.planes).not_to be_empty
+    context 'one plane' do
+
+      it 'can instrtuct a plane to land' do
+        airport = Airport.new(2, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
+        airport.land(fake_plane_1)
+        expect(airport.planes.count).to eq(1)
+      end
     end
 
-    it 'prevent landing when is full' do
-      airport.land(fake_plane_1)
-      airport.land(fake_plane_2)
-      airport.land(fake_plane_3)
-      expect(airport.land(fake_plane_3)).to eq("Unauthorized landing, airport is currently full")
+    context 'more than one plane' do
+
+      it 'prevent landing when is full' do
+        airport = Airport.new(capacity = 2, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
+        airport.land(fake_plane_1)
+        airport.land(fake_plane_2)
+        expect(airport.land(fake_plane_3)).to eq("Unauthorized landing, airport is currently full")
+      end
+
+      it 'capacity can be overriden as appropriate' do
+        airport = Airport.new(4, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
+        airport.land(fake_plane_1)
+        airport.land(fake_plane_2)
+        airport.land(fake_plane_3)
+        airport.land(fake_plane_4)
+        expect(airport.planes.count).to eq(4)
+      end
     end
 
-    it 'capacity can be overriden as appropriate' do
-      airport = Airport.new(4)
-      airport.land(fake_plane_1)
-      airport.land(fake_plane_2)
-      airport.land(fake_plane_3)
-      airport.land(fake_plane_4)
-      expect(airport.planes.count).to eq(4)
+    context 'with stormy weather' do
+
+      it 'is not allowed' do
+        airport = Airport.new(capacity = 2, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(true)
+        expect(airport.land(fake_plane_1)).to eq("Landing not allowed due to stormy weather")
+      end
     end
   end
 end
