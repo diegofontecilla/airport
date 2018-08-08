@@ -1,8 +1,10 @@
-# WHY I CAN'T RUN THE PROGRAM ON IRB WITH TGIS REQUIRE???
+# APARENTLY I DON'T NEED LINE 2 OR 3
 # require 'storm_generator'
+# require_relative 'storm_generator'
 
 class Airport
-  attr_reader :planes, :capacity
+
+  attr_reader :planes
 
   def initialize(capacity = 2, storm_g = StormGenerator.new)
     @planes = []
@@ -25,6 +27,8 @@ class Airport
   end
 
 private
+
+  attr_reader :capacity
 
   def plane_at_airport_error
     "Error, this plane is already landed"
