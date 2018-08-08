@@ -96,7 +96,7 @@ describe Airport do
       it 'is not allowed' do
         airport = Airport.new(capacity = 2, fake_storm_g)
         allow(fake_storm_g).to receive(:is_stormy?).and_return(true)
-        expect(airport.land(fake_plane_1)).to eq("Landing not allowed due to stormy weather")
+        expect(airport.land(fake_plane_1)).to eq("Landing denied due to stormy weather")
       end
     end
   end

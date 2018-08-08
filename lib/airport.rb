@@ -11,25 +11,40 @@ class Airport
   end
 
   def land(plane)
-    return "Landing not allowed due to stormy weather" if stormy?
-
-    if capacity_available?
-      message = "Error, this plane is already landed"
-      return message if !@planes.empty? && @planes.last.object_id == plane.object_id
-      @planes << plane
-    else
-      "Unauthorized landing, airport is currently full"
-    end
+    return land_denied_for_storm if stormy?
+    return airport_full if !capacity_available?
+    return plane_at_airport_error if plane_is_at_airport?(plane)
+    @planes << plane
   end
 
   def take_off
     return airport_is_empty if @planes.empty?
-    return "Take off not allowed due to stormy weather" if stormy?
+    return take_off_denied_for_storm if stormy?
     @planes.pop
     confirm_take_off
   end
 
 private
+
+  def plane_at_airport_error
+    "Error, this plane is already landed"
+  end
+
+  def plane_is_at_airport?(plane)
+    !@planes.empty? && @planes.last.object_id == plane.object_id
+  end
+
+  def airport_full
+    "Unauthorized landing, airport is currently full"
+  end
+
+  def land_denied_for_storm
+    "Landing denied due to stormy weather"
+  end
+
+  def take_off_denied_for_storm
+    "Take off not allowed due to stormy weather"
+  end
 
   def stormy?
     @storm_g.is_stormy?
