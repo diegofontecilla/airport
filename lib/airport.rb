@@ -1,9 +1,12 @@
+require 'storm_generator'
+
 class Airport
   attr_reader :planes, :capacity, :plane_number
 
-  def initialize(capacity = 2)
+  def initialize(capacity = 2, storm_g = StormGenerator.new)
     @planes = []
     @capacity = capacity
+    @storm_g = storm_g
   end
 
   def land(plane)
@@ -15,15 +18,17 @@ class Airport
   end
 
   def take_off
-    if !@planes.empty?
-      @planes.pop
-      confirm_take_off
-    else
-      airport_is_empty
-    end
+    return airport_is_empty if @planes.empty?
+    return "Take off not allowed due to stormy weather" if stormy?
+    @planes.pop
+    confirm_take_off
   end
 
 private
+
+  def stormy?
+    @storm_g.is_stormy?
+  end
 
   def capacity_available?
     @planes.count <= @capacity - 1 ? true : false
