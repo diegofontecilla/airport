@@ -1,4 +1,5 @@
-require 'storm_generator'
+# WHY I CAN'T RUN THE PROGRAM ON IRB WITH TGIS REQUIRE???
+# require 'storm_generator'
 
 class Airport
   attr_reader :planes, :capacity
@@ -12,6 +13,7 @@ class Airport
   def land(plane)
     return "Landing not allowed due to stormy weather" if stormy?
     if capacity_available?
+      return "Error, this plane is already landed" if !@planes.empty? && @planes.last.object_id == plane.object_id
       @planes << plane
     else
       "Unauthorized landing, airport is currently full"
@@ -32,7 +34,8 @@ private
   end
 
   def capacity_available?
-    @planes.count <= @capacity - 1 ? true : false
+    # WHY IF I CHANGE TO CAPACITY(NO @) STILL WORKS?
+    @planes.count < @capacity ? true : false
   end
 
   def confirm_take_off

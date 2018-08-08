@@ -69,6 +69,7 @@ describe Airport do
         allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
         airport.land(fake_plane_1)
         airport.land(fake_plane_2)
+        # WHY IF I LAND ANOTHER PLANE HERE THE TEST STILL PASS?
         expect(airport.land(fake_plane_3)).to eq("Unauthorized landing, airport is currently full")
       end
 
@@ -80,6 +81,13 @@ describe Airport do
         airport.land(fake_plane_3)
         airport.land(fake_plane_4)
         expect(airport.planes.count).to eq(4)
+      end
+
+      it 'prevent from landing same plane twice' do
+        airport = Airport.new(2, fake_storm_g)
+        allow(fake_storm_g).to receive(:is_stormy?).and_return(false)
+        airport.land(fake_plane_1)
+        expect(airport.land(fake_plane_1)).to eq("Error, this plane is already landed")
       end
     end
 
