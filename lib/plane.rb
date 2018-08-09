@@ -14,9 +14,9 @@ class Plane
     end
   end
 
-  def land
+  def land(airport)
     if @cleared_for_landing
-      airport.land(self)
+      airport.instruct_landing(self)
       @landed = true
     end
   end
