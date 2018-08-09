@@ -1,6 +1,4 @@
-# APARENTLY I DON'T NEED LINE 2 OR 3
-# require 'storm_generator'
-# require_relative 'storm_generator'
+require_relative 'storm_generator'
 
 class Airport
 
