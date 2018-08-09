@@ -2,29 +2,35 @@ require_relative 'storm_generator'
 
 class Airport
 
-  attr_reader :planes
+  # attr_reader :planes
+
+  ############################################################################
 
   def initialize(capacity = 2, storm_g = StormGenerator.new)
-    @planes = []
+    @landed_planes = []
+    @planes_cleared_for_landing = []
     @capacity = capacity
     @storm_g = storm_g
   end
 
+  def landing_conditions_ok?(plane)
+    (@planes.length < @capacity) &&
+    (!is_stormy?) &&
+    (!plane.landed)
+  end
+
+  def cleared_for_landing?(plane)
+    return false unless landing_conditions_ok?(plane)
+    @planes_cleared_for_landing << plane
+    true
+  end
+
   def land(plane)
-    return land_denied_for_storm if stormy?
-    return airport_full if !capacity_available?
-    return plane_at_airport_error if plane_is_at_airport?(plane)
-    @planes << plane
+    return unless @planes_cleared_for_landing.include?(plane)
+    @landed_planes << @planes_cleared_for_landing.delete(plane)
   end
 
-  def take_off
-    return airport_is_empty if @planes.empty?
-    return take_off_denied_for_storm if stormy?
-    @planes.pop
-    confirm_take_off
-  end
-
-private
+  ############################################################################
 
   attr_reader :capacity
 
