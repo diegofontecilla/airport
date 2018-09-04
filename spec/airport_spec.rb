@@ -65,14 +65,22 @@ describe Airport do
         expect(airport.landed_planes.count).to eq(1)
       end
 
-      # it 'prevent landing when is full' do
-      #   allow(airport).to receive(:landing_conditions_ok?).with(fake_plane_3).and_return(false)
-      #   airport.cleared_for_landing?(fake_plane_1)
-      #   airport.instruct_landing(fake_plane_1)
-      #   airport.cleared_for_landing?(fake_plane_2)
-      #   airport.instruct_landing(fake_plane_2)
-      #   expect(airport.land(fake_plane_3)).to eq("Unauthorized landing, airport is currently full")
-      # end
+      it 'can instrtuct a two planes to land' do
+        airport.cleared_for_landing?(fake_plane_1)
+        airport.instruct_landing(fake_plane_1)
+        airport.cleared_for_landing?(fake_plane_2)
+        airport.instruct_landing(fake_plane_2)
+        expect(airport.landed_planes.count).to eq(2)
+      end
+
+      it 'prevent landing when is full' do
+        airport.cleared_for_landing?(fake_plane_1)
+        airport.instruct_landing(fake_plane_1)
+        airport.cleared_for_landing?(fake_plane_2)
+        airport.instruct_landing(fake_plane_2)
+        airport.cleared_for_landing?(fake_plane_3)
+        expect(airport.instruct_landing(fake_plane_3)).to eq("Unauthorized landing, airport is currently full")
+      end
 
       # it 'prevent from landing same plane twice' do
       #   airport.land(fake_plane_1)
