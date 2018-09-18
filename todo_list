@@ -1,0 +1,6 @@
+-Make pass all the tests for airport and plane, as well as the feature tests.
+-Merge implementing_plane_class branch on master branch.
+
+14.09.18
+-Airport class: I want to inject StormGenerator class not as a conditional parameter.
+-I want #confirm_take_off on airport class to confirm that a specific plane has taken off
