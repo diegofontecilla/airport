@@ -3,7 +3,7 @@ require_relative 'storm_generator'
 
 class Airport
 
-  attr_reader :landed_planes
+  attr_reader :landed_planes, :planes_cleared_for_landing
 
   def initialize(capacity = 2, storm_g = StormGenerator.new)
     @landed_planes = []
@@ -12,22 +12,28 @@ class Airport
     @storm_g = storm_g
   end
 
-  def cheking_landing_conditions(plane)
-    return airport_full if !capacity_available?
-    return land_denied_for_storm if stormy?
-    return plane_has_landed if plane.land
-    true
-  end
-
   def cleared_for_landing?(plane)
-    return false if !cheking_landing_conditions(plane)
+    return false if !airport_conditions_ok?(plane)
     @planes_cleared_for_landing << plane
     true
   end
 
   def instruct_landing(plane)
     return not_cleared_for_landing if !@planes_cleared_for_landing.include?(plane)
-    @landed_planes << @planes_cleared_for_landing.delete(plane)
+    @planes_cleared_for_landing.delete(plane)
+    @landed_planes << plane
+  end
+
+  def instruct_take_off(plane)
+    return plane_not_at_airport if !is_plane_on_the_airport?(plane)
+    return take_off_denied_for_storm if stormy?
+    @landed_planes.delete(plane)
+    confirm_take_off
+  end
+
+  def is_plane_on_the_airport?(plane)
+    return true if @landed_planes.include?(plane)
+    false
   end
 
   private
@@ -35,12 +41,22 @@ class Airport
   attr_reader :capacity
 
   def capacity_available?
-    # WHY IF I CHANGE TO CAPACITY(NO @) STILL WORKS?
     @landed_planes.count < @capacity ? true : false
   end
 
   def stormy?
     @storm_g.is_stormy?
+  end
+
+  def airport_conditions_ok?(plane)
+    return false if !capacity_available?
+    return false if stormy?
+    return false if plane.landed
+    true
+  end
+
+  def plane_not_at_airport
+    "Can not take off because plane is not at the airport"
   end
 
   def plane_has_landed
